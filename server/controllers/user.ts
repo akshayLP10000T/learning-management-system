@@ -103,6 +103,23 @@ export const login = async (req: Request, res: Response): Promise<any> => {
     }
 }
 
+export const logout = async (_: Request, res: Response): Promise<any>=>{
+    try {
+
+        return res.clearCookie('token').status(200).json({
+            success: true,
+            message: "logged out successfully",
+        });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+
 export const updateProfile = async (req: Request, res: Response): Promise<any> => {
     try {
 

@@ -53,6 +53,23 @@ export const LoginApi = async (data: Login, dispatch: AppDispatch, setLoading: F
     }
 }
 
+export const logoutApi = async (dispatch: AppDispatch)=>{
+    try {
+
+        const res = await axios.get("http://localhost:8080/api/v1/user/logout", {
+            withCredentials: true,
+        });
+
+        if(res.data.success){
+            dispatch(setUser(null));
+            toast.success(res.data.message);
+        }
+        
+    } catch (error: any) {
+        toast.error(error.response.data.message);
+    }
+}
+
 export const updateApi = async (data: FormData, dispatch: AppDispatch, setLoading: Function) => {
     try{
 

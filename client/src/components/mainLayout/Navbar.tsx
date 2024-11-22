@@ -19,12 +19,22 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { Separator } from "../ui/separator";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { logoutApi } from "@/utils/api";
 
 const Navbar = () => {
   const { user } = useSelector((store: RootState) => store.user);
+  const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = async () => {
+    await logoutApi(dispatch);
+    navigate("/auth", {
+      replace: true,
+    });
+  };
 
   return (
     <div>
@@ -55,7 +65,10 @@ const Navbar = () => {
                 <Link to={"/profile"}>
                   <DropdownMenuItem>Profile</DropdownMenuItem>
                 </Link>
-                <DropdownMenuItem className="flex justify-between">
+                <DropdownMenuItem
+                  onClick={logoutHandler}
+                  className="flex justify-between"
+                >
                   Logout
                   <LogOut />
                 </DropdownMenuItem>
@@ -94,15 +107,22 @@ const Navbar = () => {
                 <SheetDescription></SheetDescription>
                 {user ? (
                   <>
-                    <div className="flex gap-2 dark:hover:bg-gray-800 hover:bg-gray-300 py-2 px-3 rounded-md cursor-pointer">
-                      <Book />
-                      Learning
-                    </div>
-                    <div className="flex gap-2 dark:hover:bg-gray-800 hover:bg-gray-300 py-2 px-3 rounded-md cursor-pointer">
-                      <PenBoxIcon />
-                      Edit Profile
-                    </div>
-                    <div className="flex gap-2 hover:dark:bg-gray-800 hover:bg-gray-300 py-2 px-3 rounded-md cursor-pointer">
+                    <Link to={"/learning"}>
+                      <div className="flex gap-2 dark:hover:bg-gray-800 hover:bg-gray-300 py-2 px-3 rounded-md cursor-pointer">
+                        <Book />
+                        Learning
+                      </div>
+                    </Link>
+                    <Link to={"/profile"}>
+                      <div className="flex gap-2 dark:hover:bg-gray-800 hover:bg-gray-300 py-2 px-3 rounded-md cursor-pointer">
+                        <PenBoxIcon />
+                        Edit Profile
+                      </div>
+                    </Link>
+                    <div
+                      onClick={logoutHandler}
+                      className="flex gap-2 hover:dark:bg-gray-800 hover:bg-gray-300 py-2 px-3 rounded-md cursor-pointer"
+                    >
                       <LogOut />
                       LogOut
                     </div>
