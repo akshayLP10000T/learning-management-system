@@ -20,10 +20,11 @@ import {
 } from "../ui/sheet";
 import { Separator } from "../ui/separator";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const Navbar = () => {
-  const user = true;
-  const role = "INSTRUCTOR";
+  const { user } = useSelector((store: RootState) => store.user);
 
   return (
     <div>
@@ -39,7 +40,9 @@ const Navbar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage
+                    src={user?.photoUrl || "https://github.com/shadcn.png"}
+                  />
                   <AvatarFallback>AK</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
@@ -56,7 +59,7 @@ const Navbar = () => {
                   Logout
                   <LogOut />
                 </DropdownMenuItem>
-                {role === "INSTRUCTOR" && (
+                {user?.role === "INSTRUCTOR" && (
                   <>
                     <DropdownMenuSeparator />
                     <Button className="w-full">Dashboard</Button>
@@ -104,7 +107,7 @@ const Navbar = () => {
                       LogOut
                     </div>
                     <Separator />
-                    {role === "INSTRUCTOR" && <Button>Dashboard</Button>}
+                    {user?.role === "INSTRUCTOR" && <Button>Dashboard</Button>}
                   </>
                 ) : (
                   <>

@@ -12,13 +12,17 @@ export interface User{
     photoUrl: string | null;
     updatedAt: Date;
     createdAt: Date;
-    _v: number;
+    __v: number;
 }
 
 export interface Card{
+    _id: string;
     image: string;
     title: string;
     instructure: Partial<User>;
     level: string;
     price: number;
+    updatedAt: Date;
+    createdAt: Date;
+    __v: number;
 }

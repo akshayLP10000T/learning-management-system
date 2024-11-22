@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { User } from "../models/user";
 import bcrypt from 'bcryptjs';
 import { generateToken } from "../utils/generateToken";
+import { deleteMedia, uploadMedia } from "../utils/cloudinary";
 
 export const signUp = async (req: Request, res: Response): Promise<any> => {
     try {
@@ -85,7 +86,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
         generateToken(res, user);
 
-        user = await User.findOne({email}).select("-password");
+        user = await User.findOne({ email }).select("-password");
 
         return res.status(200).json({
             success: true,
@@ -102,27 +103,54 @@ export const login = async (req: Request, res: Response): Promise<any> => {
     }
 }
 
-export const profileData = async (req: Request, res: Response): Promise<any>=>{
+export const updateProfile = async (req: Request, res: Response): Promise<any> => {
     try {
 
         const userId = req.id;
+        const { name } = req.body;
+        const profilePhoto = req.file;
 
-        const user = await User.findById(userId).select("email _id name role enrolledCourses photoUrl");
+        const user = await User.findById(userId);
 
-        if(!user){
-            return res.status(401).json({
+        if (!user) {
+            return res.status(404).json({
                 success: false,
-                message: "Some error occured while finding user",
+                message: "User not found",
             });
         }
 
+        if (user.photoUrl) {
+            const publicId = user.photoUrl.split("/").pop()?.split(".")[0];
+            deleteMedia(publicId!);
+        }
+
+        let updatedData;
+
+        if(profilePhoto){
+            const cloudResponse = await uploadMedia(profilePhoto?.path!);
+            updatedData = {
+                name,
+                photoUrl: cloudResponse?.secure_url,
+            };
+        }
+        else{
+            updatedData = {
+                name
+            }
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
+            new: true,
+        }).select("-password");
+
         return res.status(200).json({
             success: true,
-            user,
+            message: "Profile Updated Successfully",
+            user: updatedUser,
         });
-        
+
     } catch (error) {
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             message: "Internal server error",
         });
