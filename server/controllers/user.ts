@@ -173,3 +173,30 @@ export const updateProfile = async (req: Request, res: Response): Promise<any> =
         });
     }
 }
+
+export const getUserData = async (req: Request, res: Response): Promise<any> =>{
+    try {
+
+        const userId = req.id;
+
+        const user = await User.findById(userId).select("-password");
+
+        if(!user){
+            return res.status(404).json({
+                success: false,
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            user,
+        });
+        
+    } catch (error: any) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Internal Server error",
+        });
+    }
+}

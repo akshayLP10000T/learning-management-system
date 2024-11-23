@@ -94,3 +94,23 @@ export const updateApi = async (data: FormData, dispatch: AppDispatch, setLoadin
         setLoading(false);
     }
 }
+
+export const getUserDataApi = async (dispatch: AppDispatch)=>{
+    try {
+
+        const res = await axios.get("http://localhost:8080/api/v1/user/user-data", {
+            withCredentials: true,
+        });
+
+        if(res.data.success){
+            dispatch(setUser(res.data.user));
+        }
+        else{
+            dispatch(setUser(null));
+        }
+        
+    } catch (error: any) {
+        console.log(error);
+        toast.error(error?.response.data.message);
+    }
+}

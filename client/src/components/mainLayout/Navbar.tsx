@@ -82,13 +82,17 @@ const Navbar = () => {
             </DropdownMenu>
           ) : (
             <div className="flex gap-2">
-              <Button>Login</Button>
-              <Button
-                variant={"secondary"}
-                className="hover:bg-gray-300 dark:bg-gray-800 border-gray-300 border-2 dark:border-gray-800"
-              >
-                Signup
-              </Button>
+              <Link to={"/auth"}>
+                <Button>Login</Button>
+              </Link>
+              <Link to={"/auth"}>
+                <Button
+                  variant={"secondary"}
+                  className="hover:bg-gray-300 dark:bg-gray-800 border-gray-300 border-2 dark:border-gray-800"
+                >
+                  Signup
+                </Button>
+              </Link>
             </div>
           )}
           <ModeToggle />
@@ -131,8 +135,12 @@ const Navbar = () => {
                   </>
                 ) : (
                   <>
+                  <Link to={"/auth"}>
                     <Button>Login</Button>
+                  </Link>
+                  <Link to={"/auth"}>
                     <Button variant={"secondary"}>Signup</Button>
+                  </Link>
                   </>
                 )}
               </SheetHeader>
