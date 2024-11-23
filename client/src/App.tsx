@@ -5,6 +5,10 @@ import MainLayout from "./pages/MainLayout";
 import Auth from "./pages/Auth";
 import Learning from "./components/mainLayout/Learning";
 import Profile from "./components/mainLayout/Profile";
+import Dashboard from "./components/dashboard/Dashboard";
+import Sidebar from "./components/dashboard/Sidebar";
+import Courses from "./components/dashboard/course/Courses";
+import AddCourse from "./components/dashboard/course/AddCourse";
 
 const appRouter = createBrowserRouter([
   {
@@ -23,6 +27,24 @@ const appRouter = createBrowserRouter([
         path: "/profile",
         element: <Profile />,
       },
+      {
+        path: "/admin",
+        element: <Sidebar />,
+        children: [
+          {
+            path: "dashboard",
+            element: <Dashboard />
+          },
+          {
+            path: "courses",
+            element: <Courses />
+          },
+          {
+            path: "add-course",
+            element: <AddCourse />
+          },
+        ]
+      }
     ],
   },
   {

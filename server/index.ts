@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import connectDB from './database/connectDB';
 import userRoute from './routes/user';
+import courseRoute from './routes/course';
 
 dotenv.config({});
 
@@ -19,6 +20,7 @@ app.use(cookieParser());
 app.use(cors(corsOption));
 
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/course", courseRoute);
 
 app.listen(PORT, async ()=>{
     await connectDB();
