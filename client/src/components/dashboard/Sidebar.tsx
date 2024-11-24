@@ -1,4 +1,4 @@
-import { ChartNoAxesColumn, HamIcon, SquareLibrary } from "lucide-react";
+import { ChartNoAxesColumn, SquareLibrary } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 
 const Sidebar = () => {
