@@ -4,6 +4,7 @@ import { CreateCourseData, Login, SignUp } from "@/types/Form";
 import { AppDispatch } from "@/redux/store";
 import { setUser } from "@/redux/userSlice";
 import { NavigateFunction } from "react-router-dom";
+import { setCourses } from "@/redux/courseSlice";
 
 export const SignUpApi = async (data: SignUp, setLoading: Function) => {
     try {
@@ -108,10 +109,13 @@ export const getUserDataApi = async (dispatch: AppDispatch) => {
         }
         else {
             dispatch(setUser(null));
+            dispatch(setCourses([]));
         }
 
     } catch (error: any) {
         console.log(error);
+        dispatch(setUser(null));
+        dispatch(setCourses([]));
         toast.error(error?.response.data.message);
     }
 }
@@ -135,4 +139,21 @@ export const createCourseApi = async (data: CreateCourseData, navigate: Navigate
     } catch (error: any) {
         toast.error(error?.response?.data?.message);
     }
+}
+
+export const getAllInstructorCourses = async (dispatch: AppDispatch)=>{
+    try {
+
+        const res = await axios.get("http://localhost:8080/api/v1/course/", {
+            withCredentials: true,
+        });
+
+        if(res.data.success){
+            dispatch(setCourses(res.data.courses));
+        }
+        
+    } catch (error: any) {
+        console.log(error);
+        toast.error(error?.response?.data?.message);
+    }   
 }

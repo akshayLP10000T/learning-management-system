@@ -2,13 +2,13 @@ import { Request, Response } from "express";
 import { Course } from "../models/course";
 import { User } from "../models/user";
 
-export const createCourse = async (req: Request, res: Response): Promise<any>=>{
+export const createCourse = async (req: Request, res: Response): Promise<any> => {
     try {
 
         const { courseTitle, category } = req.body;
         const userId = req.id;
 
-        if(!courseTitle || !category){
+        if (!courseTitle || !category) {
             return res.status(404).json({
                 success: false,
                 message: "Course title and category is required",
@@ -17,7 +17,7 @@ export const createCourse = async (req: Request, res: Response): Promise<any>=>{
 
         const user = await User.findById(userId).select("role");
 
-        if(user?.role !== "INSTRUCTOR"){
+        if (user?.role !== "INSTRUCTOR") {
             return res.status(401).json({
                 success: false,
                 message: "You doesn't have access to create courses",
@@ -35,7 +35,7 @@ export const createCourse = async (req: Request, res: Response): Promise<any>=>{
             message: "Course created successfullly",
             course,
         });
-        
+
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -44,4 +44,31 @@ export const createCourse = async (req: Request, res: Response): Promise<any>=>{
         });
     }
 
+}
+
+export const getAllInstructorCourses = async (req: Request, res: Response): Promise<any> => {
+    try {
+
+        const userId = req.id;
+        const courses = await Course.find({ creator: userId });
+
+        if (!courses) {
+            return res.status(404).json({
+                courses: [],
+                success: true,
+            });
+        }
+
+        return res.status(200).json({
+            courses,
+            success: true,
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
 }

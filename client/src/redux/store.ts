@@ -10,6 +10,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import userSlice from './userSlice';
+import courseSlice from './courseSlice';
 
 // User for persist store
 const persistConfig = {
@@ -21,6 +22,7 @@ const persistConfig = {
 // Main slices to store data
 const rootReducer = combineReducers({
     user: userSlice,
+    courses: courseSlice,
 });
 
 // Persisting store

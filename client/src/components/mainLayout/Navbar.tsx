@@ -75,7 +75,14 @@ const Navbar = () => {
                 {user?.role === "INSTRUCTOR" && (
                   <>
                     <DropdownMenuSeparator />
-                    <Button className="w-full">Dashboard</Button>
+                    <Button
+                      onClick={() =>
+                        navigate("/admin/dashboard", { replace: true })
+                      }
+                      className="w-full"
+                    >
+                      Dashboard
+                    </Button>
                   </>
                 )}
               </DropdownMenuContent>
@@ -135,12 +142,12 @@ const Navbar = () => {
                   </>
                 ) : (
                   <>
-                  <Link to={"/auth"}>
-                    <Button>Login</Button>
-                  </Link>
-                  <Link to={"/auth"}>
-                    <Button variant={"secondary"}>Signup</Button>
-                  </Link>
+                    <Link to={"/auth"}>
+                      <Button>Login</Button>
+                    </Link>
+                    <Link to={"/auth"}>
+                      <Button variant={"secondary"}>Signup</Button>
+                    </Link>
                   </>
                 )}
               </SheetHeader>

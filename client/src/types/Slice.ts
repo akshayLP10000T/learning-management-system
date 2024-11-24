@@ -2,6 +2,10 @@ export interface UserState{
     user: User | null;
 }
 
+export interface courseState{
+    courses: Course[] | [];
+}
+
 export interface User{
     _id: string;
     name: string;
@@ -15,6 +19,22 @@ export interface User{
     __v: number;
 }
 
+export interface Course{
+    _id: string;
+    courseTitle: string;
+    subTitle: string;
+    description: string;
+    category: string;
+    courseLevel: string;
+    coursePrice: number;
+    courseThumbnail: string;
+    enrolledStudents: Partial<User>;
+    lectures: []; // Change after making lecture interface
+    creator: Partial<User>;
+    isPublished: boolean;
+}
+
+// To be deleted after showing courses
 export interface Card{
     _id: string;
     image: string;
