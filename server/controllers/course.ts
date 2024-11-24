@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Course } from "../models/course";
 import { User } from "../models/user";
+import { deleteMedia, uploadMedia } from "../utils/cloudinary";
 
 export const createCourse = async (req: Request, res: Response): Promise<any> => {
     try {
@@ -62,6 +63,61 @@ export const getAllInstructorCourses = async (req: Request, res: Response): Prom
         return res.status(200).json({
             courses,
             success: true,
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}
+
+export const editCourse = async (req: Request, res: Response): Promise<any> => {
+    try {
+
+        const { courseId } = req.params;
+        const { courseTitle, subTitle, description, category, courseLevel, coursePrice } = req.body;
+        const thumbnail = req.file;
+
+        let course = await Course.findById(courseId)
+
+        if (!course) {
+            return res.status(404).json({
+                message: "Course not found",
+                success: false,
+            });
+        }
+
+        let courseThumbnail;
+        if (thumbnail) {
+            if (course.courseThumbnail) {
+                const publicId = course.courseThumbnail.split("/").pop()?.split(".")[0];
+                await deleteMedia(publicId!);
+            }
+            const res = await uploadMedia(thumbnail.path);
+
+            courseThumbnail = res?.secure_url;
+        }
+        else {
+            courseThumbnail = null;
+        }
+
+        course = await Course.findByIdAndUpdate(courseId, {
+            courseTitle,
+            subTitle,
+            description,
+            category,
+            courseLevel,
+            coursePrice,
+            courseThumbnail,
+        }, { new: true });
+
+        return res.status(200).json({
+            success: true,
+            message: "Course Updated",
+            course
         });
 
     } catch (error) {

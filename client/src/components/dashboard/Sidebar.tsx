@@ -4,7 +4,7 @@ import { Link, Outlet } from "react-router-dom";
 const Sidebar = () => {
   return (
     <div className="flex relative">
-      <div className="hidden lg:block w-[250px] sm:w-[300px] space-y-8 border-r-2 border-r-gray-300 dark:border-r-gray-700 bg-gray-200 dark:bg-gray-800 h-screen py-5 px-2">
+      <div className="hidden lg:block w-[250px] sm:w-[300px] space-y-8 border-r-2 border-r-gray-300 dark:border-r-gray-700 bg-gray-200 dark:bg-gray-800 h-screen py-5 px-2 sticky top-0">
         <div className="space-y-4">
           <Link
             to={"/admin/dashboard"}

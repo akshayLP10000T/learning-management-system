@@ -9,6 +9,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import Sidebar from "./components/dashboard/Sidebar";
 import Courses from "./components/dashboard/course/Courses";
 import AddCourse from "./components/dashboard/course/AddCourse";
+import EditCourse from "./components/dashboard/course/EditCourse";
 
 const appRouter = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const appRouter = createBrowserRouter([
           {
             path: "add-course",
             element: <AddCourse />
+          },
+          {
+            path: "course/:courseId",
+            element: <EditCourse />
           },
         ]
       }

@@ -15,12 +15,12 @@ const courseSchema = new mongoose.Schema<CourseDocument>({
     },
     courseLevel: {
         type: String,
-        enum: ["Begineer", "Intermediate", "Expert"],
+        enum: ["Begineer", "Intermediate", "Advance"],
     },
     coursePrice: {
         type: Number,
     },
-    courseThumbnail: String,
+    courseThumbnail: String || null,
     enrolledStudents: [
         {
             type: mongoose.Schema.Types.ObjectId,

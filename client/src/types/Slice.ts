@@ -23,11 +23,11 @@ export interface Course{
     _id: string;
     courseTitle: string;
     subTitle: string;
-    description: string;
+    description: any;
     category: string;
     courseLevel: string;
     coursePrice: number;
-    courseThumbnail: string;
+    thumbnail: File | null;
     enrolledStudents: Partial<User>;
     lectures: []; // Change after making lecture interface
     creator: Partial<User>;

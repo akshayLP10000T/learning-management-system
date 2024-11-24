@@ -5,6 +5,7 @@ import { AppDispatch } from "@/redux/store";
 import { setUser } from "@/redux/userSlice";
 import { NavigateFunction } from "react-router-dom";
 import { setCourses } from "@/redux/courseSlice";
+import { Course } from "@/types/Slice";
 
 export const SignUpApi = async (data: SignUp, setLoading: Function) => {
     try {
@@ -141,19 +142,57 @@ export const createCourseApi = async (data: CreateCourseData, navigate: Navigate
     }
 }
 
-export const getAllInstructorCourses = async (dispatch: AppDispatch)=>{
+export const getAllInstructorCourses = async (dispatch: AppDispatch) => {
     try {
 
         const res = await axios.get("http://localhost:8080/api/v1/course/", {
             withCredentials: true,
         });
 
-        if(res.data.success){
+        if (res.data.success) {
             dispatch(setCourses(res.data.courses));
         }
-        
+
     } catch (error: any) {
         console.log(error);
         toast.error(error?.response?.data?.message);
-    }   
+    }
+}
+
+export const updateCourse = async (courseId: string,
+    data: Partial<Course>,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    try {
+
+        setLoading(true);
+
+        const formData = new FormData();
+
+        formData.append("courseTitle", data.courseTitle!);
+        formData.append("subTitle", data.subTitle!);
+        formData.append("description", data.description!);
+        formData.append("category", data.category!);
+        formData.append("courseLevel", data.courseLevel!);
+        formData.append("coursePrice", data.coursePrice!.toString());
+        if(data.thumbnail){
+            formData.append("thumbnail", data.thumbnail);
+        }
+
+        const res = await axios.put(`http://localhost:8080/api/v1/course/${courseId}`, data, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        if (res.data.success) {
+            toast.success(res.data.message);
+        }
+
+    } catch (error: any) {
+        toast.error(error?.response?.data?.message);
+    }
+    finally {
+        setLoading(false);
+    }
 }

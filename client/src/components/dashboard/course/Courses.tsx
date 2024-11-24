@@ -4,7 +4,6 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -16,15 +15,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Courses = () => {
-
   const dispatch: AppDispatch = useDispatch();
 
-  const { courses } = useSelector((store: RootState)=>store.courses);
+  const { courses } = useSelector((store: RootState) => store.courses);
 
-  useEffect(()=>{
-    const getAllCourses = async ()=>{
+  useEffect(() => {
+    const getAllCourses = async () => {
       await getAllInstructorCourses(dispatch);
-    }
+    };
 
     getAllCourses();
   }, []);
@@ -49,23 +47,30 @@ const Courses = () => {
         <TableBody>
           {courses.map((course) => (
             <TableRow key={course?._id}>
-              <TableCell className="font-medium">{course?.coursePrice ? course?.coursePrice : "NA"}</TableCell>
-              <TableCell className={`${course?.isPublished ? "text-green-500" : "text-red-500 font-bold"}`}>{course?.isPublished ? "Published" : "Draft"}</TableCell>
+              <TableCell className="font-medium">
+                {course?.coursePrice ? course?.coursePrice : "NA"}
+              </TableCell>
+              <TableCell
+                className={`${
+                  course?.isPublished
+                    ? "text-green-500"
+                    : "text-red-500 font-bold"
+                }`}
+              >
+                {course?.isPublished ? "Published" : "Draft"}
+              </TableCell>
               <TableCell>{course?.courseTitle}</TableCell>
               <TableCell className="text-right">
-                <Button variant={"outline"}>
+                <Button
+                  variant={"outline"}
+                  onClick={() => navigate(`/admin/course/${course?._id}`)}
+                >
                   Edit
                 </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right"></TableCell>
-          </TableRow>
-        </TableFooter>
       </Table>
     </div>
   );

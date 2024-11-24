@@ -7,7 +7,7 @@ interface Course{
     category: string;
     courseLevel: string;
     coursePrice: number;
-    courseThumbnail: string;
+    courseThumbnail: string | null;
     enrolledStudents: mongoose.Schema.Types.ObjectId[] | [];
     lectures: mongoose.Schema.Types.ObjectId[] | [];
     creator: mongoose.Schema.Types.ObjectId;
